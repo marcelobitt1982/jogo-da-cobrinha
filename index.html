@@ -90,7 +90,7 @@
     /* Camada de Botões Invisíveis mapeados sobre a imagem */
     .touch-btn {
       position: absolute;
-      background: rgba(255, 255, 255, 0); /* Transparente */
+      background: rgba(255, 255, 255, 0); /* Mude para rgba(255,0,0,0.3) se quiser visualizar a posição exata */
       border: none;
       cursor: pointer;
       touch-action: manipulation;
@@ -98,16 +98,16 @@
     }
 
     .touch-btn:active {
-      background: rgba(255, 255, 255, 0.2); /* Efeito visual ao tocar */
+      background: rgba(255, 255, 255, 0.3); /* Efeito visual ao tocar */
     }
 
-    /* Posicionamento dos Botões sobre os números e teclas do Nokia */
-    #btn-play { top: 375px; left: 125px; width: 110px; height: 35px; border-radius: 20px; }
+    /* Posicionamento ajustado sobre as teclas do Nokia 3310 */
+    #btn-play { top: 368px; left: 128px; width: 104px; height: 42px; border-radius: 20px; }
     
-    #btn-2 { top: 470px; left: 150px; width: 60px; height: 35px; }
-    #btn-4 { top: 515px; left: 80px;  width: 60px; height: 35px; }
-    #btn-6 { top: 515px; left: 220px; width: 60px; height: 35px; }
-    #btn-8 { top: 590px; left: 150px; width: 60px; height: 35px; }
+    #btn-2 { top: 468px; left: 150px; width: 60px; height: 38px; }
+    #btn-4 { top: 512px; left: 78px;  width: 60px; height: 38px; }
+    #btn-6 { top: 512px; left: 222px; width: 60px; height: 38px; }
+    #btn-8 { top: 556px; left: 150px; width: 60px; height: 38px; }
 
   </style>
 </head>
@@ -117,7 +117,7 @@
     <!-- Tela do Jogo -->
     <div class="lcd-screen">
       <div class="status-bar">
-        <span>🐍 MARCELO SNAKE</span>
+        <span>🐍 SNAKE</span>
         <span id="score">SCORE: 0</span>
       </div>
 
@@ -148,7 +148,7 @@
     const tileCountX = Math.floor(canvas.width / gridSize);
     const tileCountY = Math.floor(canvas.height / gridSize);
 
-    const stepInterval = 140; 
+    const stepInterval = 220; 
     let lastStepTime = 0;
 
     let snake = [];
