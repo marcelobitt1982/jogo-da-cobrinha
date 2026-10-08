@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Jogo da Cobrinha - Marcelo Snake</title>
+  <title>Jogo da Cobrinha - iPod Classic Edition</title>
   <style>
     * {
       box-sizing: border-box;
@@ -14,52 +14,95 @@
     }
 
     body {
-      background: linear-gradient(135deg, #1e261c 0%, #111610 100%);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at center, #2c2f36 0%, #111215 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      color: #e2e8f0;
+      color: #333;
     }
 
-    .phone-body {
-      background: #273124;
-      border: 4px solid #3a4736;
-      border-radius: 24px;
-      padding: 20px;
+    /* Corpo do iPod Classic */
+    .ipod-body {
+      background: linear-gradient(145deg, #ffffff 0%, #e6e6e6 70%, #d9d9d9 100%);
+      border: 1px solid #b0b0b0;
+      border-radius: 36px;
+      padding: 24px 20px 32px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-      max-width: 360px;
-      width: 95%;
+      box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.9),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.15);
+      max-width: 320px;
+      width: 90%;
+      position: relative;
     }
 
+    /* Brilho e acabamento reflexivo no plástico do iPod */
+    .ipod-body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+    }
+
+    /* Moldura da tela */
+    .screen-bezel {
+      background: #000;
+      border-radius: 12px;
+      padding: 10px;
+      width: 100%;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Display do iPod (Monocromático/Azulado LDC) */
+    .ipod-screen {
+      background: #b5d1cf; /* Tom azul/esverdeado clássico de LCD do iPod */
+      background: linear-gradient(180deg, #cde3e1 0%, #a8c8c6 100%);
+      border: 1px solid #789997;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+      color: #1a2b2a;
+    }
+
+    /* Barra Superior no Estilo iPod OS */
     .header {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-weight: 700;
-      font-size: 15px;
-      margin-bottom: 12px;
-      color: #a3e635;
-      letter-spacing: 0.5px;
+      font-size: 12px;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #8eadaa;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
     }
 
     .game-container {
       position: relative;
-      width: 300px;
-      height: 300px;
-      border-radius: 16px;
+      width: 240px;
+      height: 240px;
+      border: 1px solid #8baaa7;
+      border-radius: 4px;
       overflow: hidden;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.5);
+      background-color: #bcd8d6;
     }
 
     canvas {
-      background-color: #151d13;
       display: block;
       touch-action: none;
     }
@@ -70,117 +113,112 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(21, 29, 19, 0.88);
-      backdrop-filter: blur(4px);
+      background: rgba(188, 216, 214, 0.92);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      font-weight: bold;
-      color: #facc15;
-      text-align: center;
-      padding: 16px;
-      border-radius: 16px;
-    }
-
-    .action-bar {
-      width: 100%;
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .btn-action {
-      background: linear-gradient(180deg, #84cc16 0%, #65a30d 100%);
-      color: #14532d;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 20px;
-      font-family: inherit;
       font-size: 14px;
       font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(132, 204, 22, 0.3);
-      transition: all 0.15s ease;
+      color: #1a2b2a;
+      text-align: center;
+      padding: 12px;
+      letter-spacing: 0.5px;
     }
 
-    .btn-action:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 6px rgba(132, 204, 22, 0.2);
-    }
-
-    .controls {
-      display: grid;
-      grid-template-areas:
-        ". up ."
-        "left . right"
-        ". down .";
-      gap: 10px;
-      margin-top: 16px;
-      width: 180px;
-      height: 180px;
-    }
-
-    .btn {
-      background: #33412e;
-      color: #bef264;
-      border: 1px solid #475840;
-      border-radius: 14px;
-      font-size: 20px;
-      font-weight: bold;
+    /* Click Wheel Icônica */
+    .click-wheel {
+      margin-top: 28px;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f2f2f2 0%, #dedede 100%);
+      border: 1px solid #d0d0d0;
+      box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 1);
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .wheel-btn {
+      position: absolute;
+      background: transparent;
+      border: none;
+      color: #888888;
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 0 #1e271b;
-      touch-action: manipulation;
+      letter-spacing: 0.5px;
+      transition: color 0.1s ease;
+    }
+
+    .wheel-btn:active {
+      color: #333333;
+    }
+
+    .wheel-menu { top: 12px; font-weight: 800; }
+    .wheel-prev { left: 14px; font-size: 14px; }
+    .wheel-next { right: 14px; font-size: 14px; }
+    .wheel-play { bottom: 12px; font-size: 12px; }
+
+    /* Botão Central (Select/Center Button) */
+    .center-button {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #ffffff 0%, #e0e0e0 100%);
+      border: 1px solid #c8c8c8;
+      box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      outline: none;
       transition: transform 0.05s ease, background 0.05s ease;
     }
 
-    .btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 #1e271b;
-      background: #43543d;
+    .center-button:active {
+      transform: scale(0.96);
+      background: #d8d8d8;
     }
 
-    .btn-up { grid-area: up; }
-    .btn-down { grid-area: down; }
-    .btn-left { grid-area: left; }
-    .btn-right { grid-area: right; }
-
     .instructions {
-      margin-top: 14px;
-      font-size: 11px;
-      color: #788d71;
+      margin-top: 18px;
+      font-size: 10px;
+      color: #888;
       text-align: center;
+      letter-spacing: 0.3px;
     }
   </style>
 </head>
 <body>
 
-  <div class="phone-body">
-    <div class="header">
-      <span>🐍 MARCELO SNAKE</span>
-      <span id="score">SCORE: 0</span>
+  <div class="ipod-body">
+    <div class="screen-bezel">
+      <div class="ipod-screen">
+        <div class="header">
+          <span>iPod Snake</span>
+          <span id="score">SCORE: 0</span>
+        </div>
+
+        <div class="game-container">
+          <canvas id="game" width="240" height="240"></canvas>
+          <div id="overlay" class="overlay">PRESSIONE O BOTÃO CENTRAL</div>
+        </div>
+      </div>
     </div>
 
-    <div class="game-container">
-      <canvas id="game" width="300" height="300"></canvas>
-      <div id="overlay" class="overlay">PRESSIONE START</div>
+    <!-- Click Wheel -->
+    <div class="click-wheel">
+      <button class="wheel-btn wheel-menu" id="btn-up">MENU</button>
+      <button class="wheel-btn wheel-prev" id="btn-left">⏮</button>
+      <button class="wheel-btn wheel-next" id="btn-right">⏭</button>
+      <button class="wheel-btn wheel-play" id="btn-down">⏯</button>
+      <button class="center-button" id="btn-center"></button>
     </div>
 
-    <div class="action-bar">
-      <button class="btn-action" id="btn-play">▶ START / PAUSE</button>
-    </div>
-
-    <div class="controls">
-      <button class="btn btn-up" id="btn-up">▲</button>
-      <button class="btn btn-left" id="btn-left">◀</button>
-      <button class="btn btn-right" id="btn-right">▶</button>
-      <button class="btn btn-down" id="btn-down">▼</button>
-    </div>
-
-    <div class="instructions">Use os botões, deslize na tela ou use as setas do teclado</div>
+    <div class="instructions">Use a roda do iPod ou as setas do teclado</div>
   </div>
 
   <script>
@@ -188,14 +226,13 @@
     const ctx = canvas.getContext("2d");
     const scoreElement = document.getElementById("score");
     const overlay = document.getElementById("overlay");
-    const playBtn = document.getElementById("btn-play");
+    const centerBtn = document.getElementById("btn-center");
 
-    const gridSize = 15;
+    const gridSize = 12;
     const tileCount = canvas.width / gridSize;
     const maxSnakeLength = tileCount * tileCount;
 
-    // Velocidade suavizada (160ms por passo)
-    const stepInterval = 200; 
+    const stepInterval = 180; 
     let lastStepTime = 0;
     let progress = 0;
 
@@ -235,7 +272,6 @@
         }
         isRunning = true;
         overlay.style.display = "none";
-        playBtn.textContent = "⏸ PAUSA";
         lastStepTime = performance.now();
         animationFrameId = requestAnimationFrame(gameLoop);
       } else {
@@ -243,7 +279,6 @@
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
         overlay.textContent = "PAUSADO";
         overlay.style.display = "flex";
-        playBtn.textContent = "▶ CONTINUAR";
       }
     }
 
@@ -261,7 +296,6 @@
           isRunning = false;
           overlay.textContent = "GAME OVER";
           overlay.style.display = "flex";
-          playBtn.textContent = "▶ JOGAR DE NOVO";
           return;
         }
 
@@ -271,7 +305,6 @@
           isRunning = false;
           overlay.textContent = "🏆 VOCÊ GANHOU!";
           overlay.style.display = "flex";
-          playBtn.textContent = "▶ JOGAR DE NOVO";
           return;
         }
       }
@@ -319,12 +352,12 @@
     }
 
     function clearCanvas() {
-      ctx.fillStyle = "#151d13";
+      ctx.fillStyle = "#bcd8d6";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     function drawGridLines() {
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.04)";
       ctx.lineWidth = 1;
       for (let i = 0; i <= canvas.width; i += gridSize) {
         ctx.beginPath();
@@ -344,32 +377,33 @@
         const interpY = (part.prevY + (part.y - part.prevY) * p) * gridSize;
 
         const isHead = i === 0;
-        const size = gridSize - 2;
-        const radius = isHead ? 6 : 4;
+        const size = gridSize - 1;
+        const radius = isHead ? 3 : 2;
 
-        ctx.fillStyle = isHead ? "#a3e635" : "#65a30d";
+        /* Estilo LCD escuro retrô */
+        ctx.fillStyle = isHead ? "#0f1d1b" : "#2d4441";
         
         ctx.beginPath();
-        ctx.roundRect(interpX + 1, interpY + 1, size, size, radius);
+        ctx.roundRect(interpX, interpY, size, size, radius);
         ctx.fill();
 
         if (isHead) {
-          ctx.fillStyle = "#14532d";
+          ctx.fillStyle = "#bcd8d6";
           let eye1X, eye1Y, eye2X, eye2Y;
-          const eyeSize = 2.5;
+          const eyeSize = 1.5;
 
           if (dx === 1) {
-            eye1X = interpX + size - 3; eye1Y = interpY + 4;
-            eye2X = interpX + size - 3; eye2Y = interpY + size - 4;
+            eye1X = interpX + size - 2; eye1Y = interpY + 3;
+            eye2X = interpX + size - 2; eye2Y = interpY + size - 3;
           } else if (dx === -1) {
-            eye1X = interpX + 3; eye1Y = interpY + 4;
-            eye2X = interpX + 3; eye2Y = interpY + size - 4;
+            eye1X = interpX + 2; eye1Y = interpY + 3;
+            eye2X = interpX + 2; eye2Y = interpY + size - 3;
           } else if (dy === 1) {
-            eye1X = interpX + 4; eye1Y = interpY + size - 3;
-            eye2X = interpX + size - 4; eye2Y = interpY + size - 3;
+            eye1X = interpX + 3; eye1Y = interpY + size - 2;
+            eye2X = interpX + size - 3; eye2Y = interpY + size - 2;
           } else {
-            eye1X = interpX + 4; eye1Y = interpY + 3;
-            eye2X = interpX + size - 4; eye2Y = interpY + 3;
+            eye1X = interpX + 3; eye1Y = interpY + 2;
+            eye2X = interpX + size - 3; eye2Y = interpY + 2;
           }
 
           ctx.beginPath();
@@ -385,14 +419,9 @@
       const x = food.x * gridSize;
       const y = food.y * gridSize;
 
-      ctx.fillStyle = "#ef4444";
+      ctx.fillStyle = "#112220";
       ctx.beginPath();
-      ctx.arc(x + gridSize / 2, y + gridSize / 2 + 1, gridSize / 2 - 2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#84cc16";
-      ctx.beginPath();
-      ctx.ellipse(x + gridSize / 2 + 2, y + 3, 3, 1.5, Math.PI / 4, 0, Math.PI * 2);
+      ctx.arc(x + gridSize / 2, y + gridSize / 2, gridSize / 2 - 1, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -445,10 +474,10 @@
       }
     }
 
-    playBtn.addEventListener("click", () => togglePlayPause());
+    centerBtn.addEventListener("click", () => togglePlayPause());
 
     document.addEventListener("keydown", event => {
-      if (event.key === " ") togglePlayPause();
+      if (event.key === " " || event.key === "Enter") togglePlayPause();
       if (event.key === "ArrowLeft") changeDirection('LEFT');
       if (event.key === "ArrowUp") changeDirection('UP');
       if (event.key === "ArrowRight") changeDirection('RIGHT');
