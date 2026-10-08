@@ -65,7 +65,7 @@
 
     /* Display do iPod (Monocromático/Azulado LDC) */
     .ipod-screen {
-      background: #b5d1cf; /* Tom azul/esverdeado clássico de LCD do iPod */
+      background: #b5d1cf;
       background: linear-gradient(180deg, #cde3e1 0%, #a8c8c6 100%);
       border: 1px solid #789997;
       border-radius: 6px;
@@ -146,22 +146,26 @@
       position: absolute;
       background: transparent;
       border: none;
-      color: #888888;
-      font-size: 11px;
+      color: #777777;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       letter-spacing: 0.5px;
       transition: color 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
     }
 
     .wheel-btn:active {
-      color: #333333;
+      color: #111111;
     }
 
-    .wheel-menu { top: 12px; font-weight: 800; }
-    .wheel-prev { left: 14px; font-size: 14px; }
-    .wheel-next { right: 14px; font-size: 14px; }
-    .wheel-play { bottom: 12px; font-size: 12px; }
+    .wheel-up { top: 8px; }
+    .wheel-prev { left: 8px; }
+    .wheel-next { right: 8px; }
+    .wheel-down { bottom: 8px; }
 
     /* Botão Central (Select/Center Button) */
     .center-button {
@@ -211,11 +215,11 @@
 
     <!-- Click Wheel -->
     <div class="click-wheel">
-      <button class="wheel-btn wheel-menu" id="btn-up">MENU</button>
-      <button class="wheel-btn wheel-prev" id="btn-left">⏮</button>
-      <button class="wheel-btn wheel-next" id="btn-right">⏭</button>
-      <button class="wheel-btn wheel-play" id="btn-down">⏯</button>
-      <button class="center-button" id="btn-center"></button>
+      <button class="wheel-btn wheel-up" id="btn-up" title="Cima">▲</button>
+      <button class="wheel-btn wheel-prev" id="btn-left" title="Esquerda">◄</button>
+      <button class="wheel-btn wheel-next" id="btn-right" title="Direita">►</button>
+      <button class="wheel-btn wheel-down" id="btn-down" title="Baixo">▼</button>
+      <button class="center-button" id="btn-center" title="Start/Pause"></button>
     </div>
 
     <div class="instructions">Use a roda do iPod ou as setas do teclado</div>
@@ -380,7 +384,6 @@
         const size = gridSize - 1;
         const radius = isHead ? 3 : 2;
 
-        /* Estilo LCD escuro retrô */
         ctx.fillStyle = isHead ? "#0f1d1b" : "#2d4441";
         
         ctx.beginPath();
