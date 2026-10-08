@@ -117,7 +117,7 @@
     <!-- Tela do Jogo -->
     <div class="lcd-screen">
       <div class="status-bar">
-        <span>🐍 SNAKE</span>
+        <span>🐍 MARCELO SNAKE</span>
         <span id="score">SCORE: 0</span>
       </div>
 
@@ -187,11 +187,6 @@
         overlay.style.display = "none";
         lastStepTime = performance.now();
         animationFrameId = requestAnimationFrame(gameLoop);
-      } else {
-        isRunning = false;
-        if (animationFrameId) cancelAnimationFrame(animationFrameId);
-        overlayText.textContent = "PAUSADO";
-        overlay.style.display = "flex";
       }
     }
 
