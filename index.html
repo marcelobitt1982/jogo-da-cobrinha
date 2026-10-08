@@ -194,8 +194,8 @@
     const tileCount = canvas.width / gridSize;
     const maxSnakeLength = tileCount * tileCount;
 
-    // Ajustado o intervalo para deixar o jogo mais rápido e responsivo
-    const stepInterval = 120; 
+    // Velocidade suavizada (160ms por passo)
+    const stepInterval = 200; 
     let lastStepTime = 0;
     let progress = 0;
 
@@ -439,7 +439,6 @@
       if (direction === 'RIGHT' && !goingLeft) { nextDx = 1; nextDy = 0; changed = true; }
       if (direction === 'DOWN' && !goingUp) { nextDx = 0; nextDy = 1; changed = true; }
 
-      // Se mudar de direção, força a rotação instantânea sem esperar o próximo tick
       if (changed) {
         dx = nextDx;
         dy = nextDy;
@@ -456,7 +455,6 @@
       if (event.key === "ArrowDown") changeDirection('DOWN');
     });
 
-    // Eventos ultra-responsivos para touch e mouse usando 'pointerdown' e 'touchstart'
     const bindButton = (id, direction) => {
       const btn = document.getElementById(id);
       
