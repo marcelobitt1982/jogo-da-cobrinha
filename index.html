@@ -133,12 +133,14 @@
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 4px 0 #1e271b;
-      transition: all 0.1s ease;
+      touch-action: manipulation;
+      transition: transform 0.05s ease, background 0.05s ease;
     }
 
     .btn:active {
       transform: translateY(2px);
       box-shadow: 0 2px 0 #1e271b;
+      background: #43543d;
     }
 
     .btn-up { grid-area: up; }
@@ -192,10 +194,10 @@
     const tileCount = canvas.width / gridSize;
     const maxSnakeLength = tileCount * tileCount;
 
-    // Configurações de velocidade e tempo
-    const stepInterval = 220; // Tempo em ms por passo (fixo e agradável)
+    // Ajustado o intervalo para deixar o jogo mais rápido e responsivo
+    const stepInterval = 120; 
     let lastStepTime = 0;
-    let progress = 0; // Progresso de interpolação [0, 1]
+    let progress = 0;
 
     let snake = [];
     let food = { x: 5, y: 5 };
@@ -281,7 +283,6 @@
     }
 
     function moveSnake() {
-      // Salva a posição anterior de cada parte para a interpolação fluida
       snake.forEach(part => {
         part.prevX = part.x;
         part.prevY = part.y;
@@ -336,11 +337,9 @@
     }
 
     function drawSnake(p) {
-      // Desenha o corpo do rabo até a cabeça
       for (let i = snake.length - 1; i >= 0; i--) {
         const part = snake[i];
         
-        // Calcula a posição suave interpolada
         const interpX = (part.prevX + (part.x - part.prevX) * p) * gridSize;
         const interpY = (part.prevY + (part.y - part.prevY) * p) * gridSize;
 
@@ -354,22 +353,21 @@
         ctx.roundRect(interpX + 1, interpY + 1, size, size, radius);
         ctx.fill();
 
-        // Olhinhos simpáticos na cabeça
         if (isHead) {
           ctx.fillStyle = "#14532d";
           let eye1X, eye1Y, eye2X, eye2Y;
           const eyeSize = 2.5;
 
-          if (dx === 1) { // Direita
+          if (dx === 1) {
             eye1X = interpX + size - 3; eye1Y = interpY + 4;
             eye2X = interpX + size - 3; eye2Y = interpY + size - 4;
-          } else if (dx === -1) { // Esquerda
+          } else if (dx === -1) {
             eye1X = interpX + 3; eye1Y = interpY + 4;
             eye2X = interpX + 3; eye2Y = interpY + size - 4;
-          } else if (dy === 1) { // Baixo
+          } else if (dy === 1) {
             eye1X = interpX + 4; eye1Y = interpY + size - 3;
             eye2X = interpX + size - 4; eye2Y = interpY + size - 3;
-          } else { // Cima
+          } else {
             eye1X = interpX + 4; eye1Y = interpY + 3;
             eye2X = interpX + size - 4; eye2Y = interpY + 3;
           }
@@ -387,13 +385,11 @@
       const x = food.x * gridSize;
       const y = food.y * gridSize;
 
-      // Maçã fofinha
       ctx.fillStyle = "#ef4444";
       ctx.beginPath();
       ctx.arc(x + gridSize / 2, y + gridSize / 2 + 1, gridSize / 2 - 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Folhinha da maçã
       ctx.fillStyle = "#84cc16";
       ctx.beginPath();
       ctx.ellipse(x + gridSize / 2 + 2, y + 3, 3, 1.5, Math.PI / 4, 0, Math.PI * 2);
@@ -437,10 +433,17 @@
       const goingRight = dx === 1;
       const goingLeft = dx === -1;
 
-      if (direction === 'LEFT' && !goingRight) { nextDx = -1; nextDy = 0; }
-      if (direction === 'UP' && !goingDown) { nextDx = 0; nextDy = -1; }
-      if (direction === 'RIGHT' && !goingLeft) { nextDx = 1; nextDy = 0; }
-      if (direction === 'DOWN' && !goingUp) { nextDx = 0; nextDy = 1; }
+      let changed = false;
+      if (direction === 'LEFT' && !goingRight) { nextDx = -1; nextDy = 0; changed = true; }
+      if (direction === 'UP' && !goingDown) { nextDx = 0; nextDy = -1; changed = true; }
+      if (direction === 'RIGHT' && !goingLeft) { nextDx = 1; nextDy = 0; changed = true; }
+      if (direction === 'DOWN' && !goingUp) { nextDx = 0; nextDy = 1; changed = true; }
+
+      // Se mudar de direção, força a rotação instantânea sem esperar o próximo tick
+      if (changed) {
+        dx = nextDx;
+        dy = nextDy;
+      }
     }
 
     playBtn.addEventListener("click", () => togglePlayPause());
@@ -453,10 +456,23 @@
       if (event.key === "ArrowDown") changeDirection('DOWN');
     });
 
-    document.getElementById("btn-up").addEventListener("click", () => changeDirection('UP'));
-    document.getElementById("btn-down").addEventListener("click", () => changeDirection('DOWN'));
-    document.getElementById("btn-left").addEventListener("click", () => changeDirection('LEFT'));
-    document.getElementById("btn-right").addEventListener("click", () => changeDirection('RIGHT'));
+    // Eventos ultra-responsivos para touch e mouse usando 'pointerdown' e 'touchstart'
+    const bindButton = (id, direction) => {
+      const btn = document.getElementById(id);
+      
+      const handlePress = (e) => {
+        e.preventDefault();
+        changeDirection(direction);
+      };
+
+      btn.addEventListener("touchstart", handlePress, { passive: false });
+      btn.addEventListener("pointerdown", handlePress);
+    };
+
+    bindButton("btn-up", 'UP');
+    bindButton("btn-down", 'DOWN');
+    bindButton("btn-left", 'LEFT');
+    bindButton("btn-right", 'RIGHT');
 
     let touchStartX = 0;
     let touchStartY = 0;
@@ -472,7 +488,7 @@
       let diffX = e.changedTouches[0].clientX - touchStartX;
       let diffY = e.changedTouches[0].clientY - touchStartY;
 
-      if (Math.abs(diffX) > 20 || Math.abs(diffY) > 20) {
+      if (Math.abs(diffX) > 15 || Math.abs(diffY) > 15) {
         if (Math.abs(diffX) > Math.abs(diffY)) {
           changeDirection(diffX > 0 ? 'RIGHT' : 'LEFT');
         } else {
