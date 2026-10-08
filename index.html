@@ -14,101 +14,99 @@
     }
 
     body {
-      background-color: #2b302a;
-      font-family: 'Courier New', Courier, monospace;
+      background: linear-gradient(135deg, #1e261c 0%, #111610 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      color: #111;
+      color: #e2e8f0;
     }
 
-    /* Moldura estilo Nokia */
     .phone-body {
-      background-color: #929d89;
-      border: 12px solid #5a6353;
-      border-radius: 16px;
-      padding: 16px;
+      background: #273124;
+      border: 4px solid #3a4736;
+      border-radius: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
       max-width: 360px;
       width: 95%;
     }
 
-    /* Placar estilo tela monocromática */
     .header {
       width: 100%;
       display: flex;
       justify-content: space-between;
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 8px;
-      color: #1a2312;
-      border-bottom: 2px solid #1a2312;
-      padding-bottom: 4px;
+      align-items: center;
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #a3e635;
+      letter-spacing: 0.5px;
     }
 
-    /* Áreas do jogo */
     .game-container {
       position: relative;
       width: 300px;
       height: 300px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.5);
     }
 
     canvas {
-      background-color: #a7b39b;
-      border: 3px solid #1a2312;
+      background-color: #151d13;
       display: block;
-      image-rendering: pixelated;
-      touch-action: none; /* Impede rolagem da tela ao deslizar o dedo */
+      touch-action: none;
     }
 
-    /* Mensagem de Pausa / Início / Vitória na tela */
     .overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(167, 179, 155, 0.85);
+      background: rgba(21, 29, 19, 0.88);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
-      color: #1a2312;
-      border: 3px solid #1a2312;
+      color: #facc15;
       text-align: center;
-      padding: 10px;
+      padding: 16px;
+      border-radius: 16px;
     }
 
-    /* Controles para Celular */
     .action-bar {
       width: 100%;
-      margin-top: 12px;
+      margin-top: 16px;
       display: flex;
       justify-content: center;
     }
 
     .btn-action {
-      background-color: #1a2312;
-      color: #a7b39b;
+      background: linear-gradient(180deg, #84cc16 0%, #65a30d 100%);
+      color: #14532d;
       border: none;
-      border-radius: 6px;
-      padding: 8px 16px;
+      border-radius: 12px;
+      padding: 10px 20px;
       font-family: inherit;
       font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 3px 0 #000;
+      box-shadow: 0 4px 12px rgba(132, 204, 22, 0.3);
+      transition: all 0.15s ease;
     }
 
     .btn-action:active {
       transform: translateY(2px);
-      box-shadow: 0 1px 0 #000;
+      box-shadow: 0 2px 6px rgba(132, 204, 22, 0.2);
     }
 
     .controls {
@@ -117,29 +115,30 @@
         ". up ."
         "left . right"
         ". down .";
-      gap: 8px;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 16px;
       width: 180px;
       height: 180px;
     }
 
     .btn {
-      background-color: #3b4237;
-      color: #a7b39b;
-      border: none;
-      border-radius: 8px;
+      background: #33412e;
+      color: #bef264;
+      border: 1px solid #475840;
+      border-radius: 14px;
       font-size: 20px;
       font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 0 #1f231d;
+      box-shadow: 0 4px 0 #1e271b;
+      transition: all 0.1s ease;
     }
 
     .btn:active {
       transform: translateY(2px);
-      box-shadow: 0 2px 0 #1f231d;
+      box-shadow: 0 2px 0 #1e271b;
     }
 
     .btn-up { grid-area: up; }
@@ -148,9 +147,9 @@
     .btn-right { grid-area: right; }
 
     .instructions {
-      margin-top: 12px;
+      margin-top: 14px;
       font-size: 11px;
-      color: #1a2312;
+      color: #788d71;
       text-align: center;
     }
   </style>
@@ -159,13 +158,13 @@
 
   <div class="phone-body">
     <div class="header">
-      <span>MARCELO SNAKE</span>
+      <span>🐍 MARCELO SNAKE</span>
       <span id="score">SCORE: 0</span>
     </div>
 
     <div class="game-container">
       <canvas id="game" width="300" height="300"></canvas>
-      <div id="overlay" class="overlay">PRESSIONE PLAY</div>
+      <div id="overlay" class="overlay">PRESSIONE START</div>
     </div>
 
     <div class="action-bar">
@@ -191,36 +190,42 @@
 
     const gridSize = 15;
     const tileCount = canvas.width / gridSize;
-    const maxSnakeLength = tileCount * tileCount; // Total de blocos na tela (400)
+    const maxSnakeLength = tileCount * tileCount;
+
+    // Configurações de velocidade e tempo
+    const stepInterval = 220; // Tempo em ms por passo (fixo e agradável)
+    let lastStepTime = 0;
+    let progress = 0; // Progresso de interpolação [0, 1]
 
     let snake = [];
     let food = { x: 5, y: 5 };
     let dx = 0;
     let dy = -1;
+    let nextDx = 0;
+    let nextDy = -1;
     let score = 0;
-    let speed = 120;
     
-    // Controle de estado
     let isRunning = false;
-    let gameTimeout = null;
     let isGameWon = false;
+    let animationFrameId = null;
 
     function initGame() {
       snake = [
-        { x: 10, y: 10 },
-        { x: 10, y: 11 },
-        { x: 10, y: 12 }
+        { x: 10, y: 10, prevX: 10, prevY: 10 },
+        { x: 10, y: 11, prevX: 10, prevY: 11 },
+        { x: 10, y: 12, prevX: 10, prevY: 12 }
       ];
       dx = 0;
       dy = -1;
+      nextDx = 0;
+      nextDy = -1;
       score = 0;
       isGameWon = false;
       scoreElement.textContent = `SCORE: ${score}`;
       generateFood();
-      renderStaticFrame();
+      renderFrame(0);
     }
 
-    // Alterna entre Rodar e Pausar
     function togglePlayPause() {
       if (!isRunning) {
         if (isGameWon || overlay.textContent === "GAME OVER") {
@@ -229,75 +234,74 @@
         isRunning = true;
         overlay.style.display = "none";
         playBtn.textContent = "⏸ PAUSA";
-        gameLoop();
+        lastStepTime = performance.now();
+        animationFrameId = requestAnimationFrame(gameLoop);
       } else {
         isRunning = false;
-        clearTimeout(gameTimeout);
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
         overlay.textContent = "PAUSADO";
         overlay.style.display = "flex";
         playBtn.textContent = "▶ CONTINUAR";
       }
     }
 
-    // Loop do Jogo
-    function gameLoop() {
+    function gameLoop(currentTime) {
       if (!isRunning) return;
 
-      if (hasGameEnded()) {
-        isRunning = false;
-        overlay.textContent = "GAME OVER";
-        overlay.style.display = "flex";
-        playBtn.textContent = "▶ JOGAR DE NOVO";
-        return;
-      }
+      const delta = currentTime - lastStepTime;
 
-      gameTimeout = setTimeout(function onTick() {
-        clearCanvas();
-        drawFood();
-        moveSnake();
-        drawSnake();
+      if (delta >= stepInterval) {
+        lastStepTime = currentTime - (delta % stepInterval);
+        dx = nextDx;
+        dy = nextDy;
 
-        if (isGameWon) {
+        if (hasGameEnded()) {
           isRunning = false;
-          overlay.textContent = "🏆 VOCÊ GANHOU! TELA CHEIA!";
+          overlay.textContent = "GAME OVER";
           overlay.style.display = "flex";
           playBtn.textContent = "▶ JOGAR DE NOVO";
           return;
         }
 
-        gameLoop();
-      }, speed);
-    }
+        moveSnake();
 
-    function renderStaticFrame() {
-      clearCanvas();
-      drawFood();
-      drawSnake();
-    }
+        if (isGameWon) {
+          isRunning = false;
+          overlay.textContent = "🏆 VOCÊ GANHOU!";
+          overlay.style.display = "flex";
+          playBtn.textContent = "▶ JOGAR DE NOVO";
+          return;
+        }
+      }
 
-    function clearCanvas() {
-      ctx.fillStyle = "#a7b39b";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
+      progress = Math.min((currentTime - lastStepTime) / stepInterval, 1);
+      renderFrame(progress);
 
-    function drawSnake() {
-      ctx.fillStyle = "#1a2312";
-      snake.forEach(part => {
-        ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 1, gridSize - 1);
-      });
+      animationFrameId = requestAnimationFrame(gameLoop);
     }
 
     function moveSnake() {
-      const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+      // Salva a posição anterior de cada parte para a interpolação fluida
+      snake.forEach(part => {
+        part.prevX = part.x;
+        part.prevY = part.y;
+      });
+
+      const head = { 
+        x: snake[0].x + dx, 
+        y: snake[0].y + dy,
+        prevX: snake[0].x,
+        prevY: snake[0].y
+      };
+
       snake.unshift(head);
 
-      // Checa se comeu a comida
-      if (snake[0].x === food.x && snake[0].y === food.y) {
+      if (head.x === food.x && head.y === food.y) {
         score += 10;
         scoreElement.textContent = `SCORE: ${score}`;
 
         if (snake.length === maxSnakeLength) {
-          isGameWon = true; // Preencheu a tela inteira!
+          isGameWon = true;
         } else {
           generateFood();
         }
@@ -306,16 +310,102 @@
       }
     }
 
-    // Gera comida apenas em espaços livres
+    function renderFrame(p) {
+      clearCanvas();
+      drawGridLines();
+      drawFood();
+      drawSnake(p);
+    }
+
+    function clearCanvas() {
+      ctx.fillStyle = "#151d13";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawGridLines() {
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= canvas.width; i += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i); ctx.lineTo(canvas.width, i);
+        ctx.stroke();
+      }
+    }
+
+    function drawSnake(p) {
+      // Desenha o corpo do rabo até a cabeça
+      for (let i = snake.length - 1; i >= 0; i--) {
+        const part = snake[i];
+        
+        // Calcula a posição suave interpolada
+        const interpX = (part.prevX + (part.x - part.prevX) * p) * gridSize;
+        const interpY = (part.prevY + (part.y - part.prevY) * p) * gridSize;
+
+        const isHead = i === 0;
+        const size = gridSize - 2;
+        const radius = isHead ? 6 : 4;
+
+        ctx.fillStyle = isHead ? "#a3e635" : "#65a30d";
+        
+        ctx.beginPath();
+        ctx.roundRect(interpX + 1, interpY + 1, size, size, radius);
+        ctx.fill();
+
+        // Olhinhos simpáticos na cabeça
+        if (isHead) {
+          ctx.fillStyle = "#14532d";
+          let eye1X, eye1Y, eye2X, eye2Y;
+          const eyeSize = 2.5;
+
+          if (dx === 1) { // Direita
+            eye1X = interpX + size - 3; eye1Y = interpY + 4;
+            eye2X = interpX + size - 3; eye2Y = interpY + size - 4;
+          } else if (dx === -1) { // Esquerda
+            eye1X = interpX + 3; eye1Y = interpY + 4;
+            eye2X = interpX + 3; eye2Y = interpY + size - 4;
+          } else if (dy === 1) { // Baixo
+            eye1X = interpX + 4; eye1Y = interpY + size - 3;
+            eye2X = interpX + size - 4; eye2Y = interpY + size - 3;
+          } else { // Cima
+            eye1X = interpX + 4; eye1Y = interpY + 3;
+            eye2X = interpX + size - 4; eye2Y = interpY + 3;
+          }
+
+          ctx.beginPath();
+          ctx.arc(eye1X, eye1Y, eyeSize, 0, Math.PI * 2);
+          ctx.arc(eye2X, eye2Y, eyeSize, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    function drawFood() {
+      if (isGameWon) return;
+      const x = food.x * gridSize;
+      const y = food.y * gridSize;
+
+      // Maçã fofinha
+      ctx.fillStyle = "#ef4444";
+      ctx.beginPath();
+      ctx.arc(x + gridSize / 2, y + gridSize / 2 + 1, gridSize / 2 - 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Folhinha da maçã
+      ctx.fillStyle = "#84cc16";
+      ctx.beginPath();
+      ctx.ellipse(x + gridSize / 2 + 2, y + 3, 3, 1.5, Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
     function generateFood() {
       let emptyTiles = [];
-
       for (let x = 0; x < tileCount; x++) {
         for (let y = 0; y < tileCount; y++) {
           const isOccupied = snake.some(part => part.x === x && part.y === y);
-          if (!isOccupied) {
-            emptyTiles.push({ x, y });
-          }
+          if (!isOccupied) emptyTiles.push({ x, y });
         }
       }
 
@@ -328,23 +418,15 @@
       food = emptyTiles[randomIndex];
     }
 
-    function drawFood() {
-      if (isGameWon) return;
-      ctx.fillStyle = "#1a2312";
-      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
-    }
-
     function hasGameEnded() {
-      for (let i = 4; i < snake.length; i++) {
-        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+      const nextHeadX = snake[0].x + nextDx;
+      const nextHeadY = snake[0].y + nextDy;
+
+      for (let i = 0; i < snake.length - 1; i++) {
+        if (snake[i].x === nextHeadX && snake[i].y === nextHeadY) return true;
       }
 
-      const hitLeftWall = snake[0].x < 0;
-      const hitRightWall = snake[0].x >= tileCount;
-      const hitToptWall = snake[0].y < 0;
-      const hitBottomWall = snake[0].y >= tileCount;
-
-      return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
+      return nextHeadX < 0 || nextHeadX >= tileCount || nextHeadY < 0 || nextHeadY >= tileCount;
     }
 
     function changeDirection(direction) {
@@ -355,38 +437,27 @@
       const goingRight = dx === 1;
       const goingLeft = dx === -1;
 
-      if (direction === 'LEFT' && !goingRight) { dx = -1; dy = 0; }
-      if (direction === 'UP' && !goingDown) { dx = 0; dy = -1; }
-      if (direction === 'RIGHT' && !goingLeft) { dx = 1; dy = 0; }
-      if (direction === 'DOWN' && !goingUp) { dx = 0; dy = 1; }
+      if (direction === 'LEFT' && !goingRight) { nextDx = -1; nextDy = 0; }
+      if (direction === 'UP' && !goingDown) { nextDx = 0; nextDy = -1; }
+      if (direction === 'RIGHT' && !goingLeft) { nextDx = 1; nextDy = 0; }
+      if (direction === 'DOWN' && !goingUp) { nextDx = 0; nextDy = 1; }
     }
 
-    // Clique no botão de Play/Pausa
-    playBtn.addEventListener("click", () => {
-      togglePlayPause();
-    });
+    playBtn.addEventListener("click", () => togglePlayPause());
 
-    // Eventos do Teclado
     document.addEventListener("keydown", event => {
-      const keyPressed = event.key;
-
-      if (keyPressed === " ") {
-        togglePlayPause();
-      }
-
-      if (keyPressed === "ArrowLeft") changeDirection('LEFT');
-      if (keyPressed === "ArrowUp") changeDirection('UP');
-      if (keyPressed === "ArrowRight") changeDirection('RIGHT');
-      if (keyPressed === "ArrowDown") changeDirection('DOWN');
+      if (event.key === " ") togglePlayPause();
+      if (event.key === "ArrowLeft") changeDirection('LEFT');
+      if (event.key === "ArrowUp") changeDirection('UP');
+      if (event.key === "ArrowRight") changeDirection('RIGHT');
+      if (event.key === "ArrowDown") changeDirection('DOWN');
     });
 
-    // Eventos dos botões direcionais
     document.getElementById("btn-up").addEventListener("click", () => changeDirection('UP'));
     document.getElementById("btn-down").addEventListener("click", () => changeDirection('DOWN'));
     document.getElementById("btn-left").addEventListener("click", () => changeDirection('LEFT'));
     document.getElementById("btn-right").addEventListener("click", () => changeDirection('RIGHT'));
 
-    // --- Suporte a Gestos de Deslizar (Swipe) no Celular ---
     let touchStartX = 0;
     let touchStartY = 0;
 
@@ -398,27 +469,18 @@
     canvas.addEventListener('touchend', (e) => {
       if (!isRunning) return;
 
-      let touchEndX = e.changedTouches[0].clientX;
-      let touchEndY = e.changedTouches[0].clientY;
+      let diffX = e.changedTouches[0].clientX - touchStartX;
+      let diffY = e.changedTouches[0].clientY - touchStartY;
 
-      let diffX = touchEndX - touchStartX;
-      let diffY = touchEndY - touchStartY;
-
-      // Distância mínima para considerar um deslize (swipe)
       if (Math.abs(diffX) > 20 || Math.abs(diffY) > 20) {
         if (Math.abs(diffX) > Math.abs(diffY)) {
-          // Movimento Horizontal
-          if (diffX > 0) changeDirection('RIGHT');
-          else changeDirection('LEFT');
+          changeDirection(diffX > 0 ? 'RIGHT' : 'LEFT');
         } else {
-          // Movimento Vertical
-          if (diffY > 0) changeDirection('DOWN');
-          else changeDirection('UP');
+          changeDirection(diffY > 0 ? 'DOWN' : 'UP');
         }
       }
     }, { passive: true });
 
-    // Inicializa o estado visual
     initGame();
   </script>
 </body>
