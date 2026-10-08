@@ -24,7 +24,7 @@
       color: #000;
     }
 
-    /* Container com a Imagem Real do Nokia */
+    /* Container com a foto do Nokia */
     .nokia-container {
       position: relative;
       width: 360px;
@@ -35,20 +35,20 @@
       justify-content: center;
     }
 
-    /* Tela do Jogo sobreposta na tela da imagem */
+    /* Tela LCD perfeitamente ajustada dentro da moldura preta */
     .lcd-screen {
       position: absolute;
-      top: 191px;
-      width: 200px;
-      height: 153px;
+      top: 202px;
+      width: 202px;
+      height: 145px;
       background-color: #9bbc0f;
       border-radius: 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 4px;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+      padding: 3px;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
       overflow: hidden;
     }
 
@@ -72,42 +72,76 @@
 
     .overlay {
       position: absolute;
-      top: 18px;
+      top: 16px;
       left: 0;
       width: 100%;
-      height: calc(100% - 18px);
+      height: calc(100% - 16px);
       background: rgba(155, 188, 15, 0.95);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
       color: #0f380f;
       text-align: center;
-      padding: 6px;
+      padding: 4px;
     }
 
-    /* Camada de Botões Invisíveis mapeados sobre a imagem */
-    .touch-btn {
+    /* Botão Play invisível sobre a tecla principal azul */
+    #btn-play {
       position: absolute;
-      background: rgba(255, 255, 255, 0); /* Mude para rgba(255,0,0,0.3) se quiser visualizar a posição exata */
+      top: 388px;
+      left: 118px;
+      width: 124px;
+      height: 38px;
+      background: transparent;
       border: none;
       cursor: pointer;
       touch-action: manipulation;
-      border-radius: 50%;
+      border-radius: 18px;
     }
 
-    .touch-btn:active {
-      background: rgba(255, 255, 255, 0.3); /* Efeito visual ao tocar */
+    #btn-play:active {
+      background: rgba(255, 255, 255, 0.2);
     }
 
-    /* Posicionamento ajustado sobre as teclas do Nokia 3310 */
-    #btn-play { top: 368px; left: 128px; width: 104px; height: 42px; border-radius: 20px; }
-    
-    #btn-2 { top: 468px; left: 150px; width: 60px; height: 38px; }
-    #btn-4 { top: 512px; left: 78px;  width: 60px; height: 38px; }
-    #btn-6 { top: 512px; left: 222px; width: 60px; height: 38px; }
-    #btn-8 { top: 556px; left: 150px; width: 60px; height: 38px; }
+    /* D-Pad Virtual reposicionado mais para baixo */
+    .dpad-container {
+      position: absolute;
+      top: 510px;
+      width: 160px;
+      height: 160px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .dpad-btn {
+      background: #c5cbb7;
+      border: 2px solid #5a634b;
+      border-radius: 12px;
+      color: #0f380f;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #414835, inset 0 2px 0 rgba(255, 255, 255, 0.5);
+      touch-action: manipulation;
+    }
+
+    .dpad-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #414835;
+      background: #aab29b;
+    }
+
+    #btn-up    { grid-column: 2; grid-row: 1; }
+    #btn-left  { grid-column: 1; grid-row: 2; }
+    #btn-right { grid-column: 3; grid-row: 2; }
+    #btn-down  { grid-column: 2; grid-row: 3; }
 
   </style>
 </head>
@@ -117,23 +151,27 @@
     <!-- Tela do Jogo -->
     <div class="lcd-screen">
       <div class="status-bar">
-        <span>🐍 SNAKE</span>
+        <span>🐍 MARCELO SNAKE</span>
         <span id="score">SCORE: 0</span>
       </div>
 
-      <canvas id="game" width="190" height="125"></canvas>
+      <canvas id="game" width="186" height="118"></canvas>
 
       <div id="overlay" class="overlay">
-        <span id="overlay-text">PRESSIONE SELECT</span>
+        <span id="overlay-text">TOQUE NO BOTÃO AZUL PARA INICIAR</span>
       </div>
     </div>
 
-    <!-- Botões Invisíveis posicionados sobre a foto do telemóvel -->
-    <button class="touch-btn" id="btn-play"></button>
-    <button class="touch-btn" id="btn-2"></button>
-    <button class="touch-btn" id="btn-4"></button>
-    <button class="touch-btn" id="btn-6"></button>
-    <button class="touch-btn" id="btn-8"></button>
+    <!-- Botão Invisível Play/Select -->
+    <button id="btn-play"></button>
+
+    <!-- D-Pad Virtual posicionado mais abaixo -->
+    <div class="dpad-container">
+      <button class="dpad-btn" id="btn-up">▲</button>
+      <button class="dpad-btn" id="btn-left">◄</button>
+      <button class="dpad-btn" id="btn-right">►</button>
+      <button class="dpad-btn" id="btn-down">▼</button>
+    </div>
   </div>
 
   <script>
@@ -142,7 +180,6 @@
     const scoreElement = document.getElementById("score");
     const overlay = document.getElementById("overlay");
     const overlayText = document.getElementById("overlay-text");
-    const playBtn = document.getElementById("btn-play");
 
     const gridSize = 8;
     const tileCountX = Math.floor(canvas.width / gridSize);
@@ -178,7 +215,7 @@
       renderFrame();
     }
 
-    function togglePlayPause() {
+    function startGame() {
       if (!isRunning) {
         if (overlayText.textContent.includes("GAME OVER") || overlayText.textContent.includes("GANHOU")) {
           initGame();
@@ -296,18 +333,18 @@
       btn.addEventListener("pointerdown", handlePress);
     };
 
-    bindButton("btn-2", () => changeDirection('UP'));
-    bindButton("btn-8", () => changeDirection('DOWN'));
-    bindButton("btn-4", () => changeDirection('LEFT'));
-    bindButton("btn-6", () => changeDirection('RIGHT'));
-    bindButton("btn-play", () => togglePlayPause());
+    bindButton("btn-up", () => changeDirection('UP'));
+    bindButton("btn-down", () => changeDirection('DOWN'));
+    bindButton("btn-left", () => changeDirection('LEFT'));
+    bindButton("btn-right", () => changeDirection('RIGHT'));
+    bindButton("btn-play", () => startGame());
 
     document.addEventListener("keydown", event => {
-      if (event.key === " " || event.key === "Enter") togglePlayPause();
-      if (event.key === "ArrowLeft" || event.key === "4") changeDirection('LEFT');
-      if (event.key === "ArrowUp" || event.key === "2") changeDirection('UP');
-      if (event.key === "ArrowRight" || event.key === "6") changeDirection('RIGHT');
-      if (event.key === "ArrowDown" || event.key === "8") changeDirection('DOWN');
+      if (event.key === " " || event.key === "Enter") startGame();
+      if (event.key === "ArrowLeft") changeDirection('LEFT');
+      if (event.key === "ArrowUp") changeDirection('UP');
+      if (event.key === "ArrowRight") changeDirection('RIGHT');
+      if (event.key === "ArrowDown") changeDirection('DOWN');
     });
 
     initGame();
