@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MARCELO CHESS</title>
-    <!-- CSS do Chessground (Visual moderno do Lichess) -->
+    <!-- CSS do Chessground -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessground/9.0.0/chessground.min.css">
     <style>
         :root {
@@ -49,13 +49,16 @@
         }
 
         #board {
-            width: 400px;
-            height: 400px;
+            width: 380px;
+            height: 380px;
+            max-width: 90vw;
+            max-height: 90vw;
             border-radius: 14px;
             overflow: hidden;
             border: 3px solid #1e293b;
             transform: rotateX(15deg) scaleY(1.05);
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.8);
+            background-color: #1e293b;
         }
 
         /* Cores das casas do tabuleiro */
@@ -71,7 +74,7 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9);
             text-align: center;
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             box-sizing: border-box;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -134,7 +137,7 @@
 
     <!-- Controles -->
     <div class="info">
-        <p id="status">Sua vez (Brancas)</p>
+        <p id="status">Carregando jogo...</p>
         <div class="controls-row">
             <select id="colorSelect">
                 <option value="white">Jogar de Brancas</option>
@@ -146,11 +149,11 @@
 
     <!-- Chess.js para regras -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-    <!-- Chessground para interface visual avançada -->
+    <!-- Chessground para interface visual -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chessground/9.0.0/chessground.min.js"></script>
 
     <script>
-        var game = new Chess();
+        var game = null;
         var chessgroundBoard = null;
         var statusEl = document.getElementById('status');
         var playerColor = 'white';
@@ -195,7 +198,7 @@
 
                             updateStatus();
 
-                            if (!game.game_over() && turnColor !== (playerColor === 'white' ? 'white' : 'black')) {
+                            if (!game.game_over() && !isMyTurn) {
                                 statusEl.innerText = 'Robô pensando...';
                                 setTimeout(makeSmartMove, 400);
                             }
@@ -243,8 +246,14 @@
             }
         }
 
-        // Inicializa o Chessground
-        document.addEventListener("DOMContentLoaded", function() {
+        // Garante que o jogo só inicia após carregar todos os scripts
+        window.addEventListener('load', function() {
+            if (typeof Chess === 'undefined' || typeof Chessground === 'undefined') {
+                statusEl.innerText = 'Erro ao carregar bibliotecas. Verifique sua internet.';
+                return;
+            }
+
+            game = new Chess();
             chessgroundBoard = Chessground(document.getElementById('board'), {
                 fen: game.fen(),
                 orientation: 'white',
@@ -258,8 +267,8 @@
             updateStatus();
         });
 
-        // Botão Nova Partida / Trocar Cor
         document.getElementById('resetBtn').addEventListener('click', function() {
+            if (!game) return;
             playerColor = document.getElementById('colorSelect').value;
             game.reset();
             
